@@ -25,8 +25,6 @@ sub GetCurrentUser {
 	return ($args{'CurrentUser'}, $args{'AuthLevel'});
     }
 
-    $RT::Logger->debug(sprintf("Operating on queue %s", $args{'Queue'}));
-
     my @messageids = FetchPossibleHeaders($args{'Message'});
 
     unless (scalar @messageids >= 1) {
@@ -131,8 +129,13 @@ sub MessageIdToTickets {
 	);
 
     my %tickets;
+    $RT::Logger->debug($attachments->BuildSelectQuery());
     while (my $attach = $attachments->Next) {
-	$tickets{$attach->TransactionObj()->Ticket} = undef;
+	my $transaction = $attach->TransactionObj();
+	my $ticket_id = $transaction->Ticket();
+	$RT::Logger->debug(sprintf("Match for message <%s>: attachment %s, transaction %s, ticket %s",
+				   $id, $attach->id, $transaction->id, $ticket_id));
+	$tickets{$ticket_id} = undef;
     }
 
     return keys(%tickets);
