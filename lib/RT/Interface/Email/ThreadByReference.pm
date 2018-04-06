@@ -36,8 +36,8 @@ sub GetCurrentUser {
 
     my %tickets = ();
     foreach my $messageid (@messageids) {
-	if (my $ids = MessageIdToTicket($messageid)) {
-	    foreach my $ticket ($ids) {
+	if (my @ticket_ids = MessageIdToTickets($messageid)) {
+	    foreach my $ticket (@ticket_ids) {
 		$tickets{$ticket} = undef;
 	    }
 	}
@@ -90,7 +90,7 @@ sub FetchPossibleHeaders {
     return @msgids;
 }
 
-sub MessageIdToTicket {
+sub MessageIdToTickets {
     # Copied heavily from rt-references
     my $id = shift();
 
