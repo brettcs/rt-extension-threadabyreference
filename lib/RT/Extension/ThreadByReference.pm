@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package RT::Extension::ThreadByReference;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 NAME
 
@@ -20,7 +20,7 @@ to associate a message with.
 
 =head1 RT VERSION
 
-Works with RT 4.0 and greater.
+Works with RT 4.4 and greater.
 
 =head1 INSTALLATION
 
@@ -36,15 +36,14 @@ May need root permissions
 
 =item Edit your F</opt/rt4/etc/RT_SiteConfig.pm>
 
-If you are using RT 4.2 or greater, add this line:
+Add this line:
 
     Plugin('RT::Extension::ThreadByReference');
 
-For RT 4.0, add this line:
+Then make sure you load 'ThreadByReference' where you set MailPlugins.
+If you don't use this setting already, that's:
 
-    Set(@Plugins, qw(RT::Extension::ThreadByReference));
-
-or add C<RT::Extension::ThreadByReference> to your existing C<@Plugins> line.
+    Set(@MailPlugins, qw(ThreadByReference));
 
 =item Clear your mason cache
 
@@ -57,6 +56,7 @@ or add C<RT::Extension::ThreadByReference> to your existing C<@Plugins> line.
 =head1 AUTHOR
 
 Harlan Lieberman-Berg C<< <hlieberm@akamai.com> >>
+Brett Smith C<< <brettcsmith@brettcsmith.org> >>
 
 =head1 BUGS
 
@@ -71,6 +71,7 @@ or via the web at
 =head1 LICENSE
 
 Copyright (c) 2015-2016 by Akamai Technologies, Inc.
+Copyright (c) 2018 Brett Smith
 
 This software is free software; you can redistribute and/or modify it
 under the same terms as Perl itself.
