@@ -42,13 +42,13 @@ sub BeforeDecrypt {
 	}
     }
     
-    my @tickets = sort(keys(%tickets));
-
-    if (scalar(@tickets) == 0) {
+    my @tickets = keys(%tickets);
+    my $ticket_count = scalar(@tickets);
+    if ($ticket_count == 0) {
 	$RT::Logger->debug("No tickets for references found.");
 	return;
     }
-    elsif (scalar(@tickets) > 1) {
+    elsif ($ticket_count > 1) {
 	$RT::Logger->warning("Email maps to more than one ticket.");
 	$RT::Logger->warning(sprintf("Tickets: %s", @tickets));
     }
@@ -123,8 +123,8 @@ sub MessageIdToTickets {
 	VALUE => 'RT::Ticket'
 	);
 
-    my %tickets;
     $RT::Logger->debug($attachments->BuildSelectQuery());
+    my %tickets = ();
     while (my $attach = $attachments->Next) {
 	my $transaction = $attach->TransactionObj();
 	my $ticket_id = $transaction->Ticket();
