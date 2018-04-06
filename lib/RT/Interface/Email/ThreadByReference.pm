@@ -71,7 +71,7 @@ sub FetchPossibleHeaders {
     # In practice, In-Reply-To seems to no longer be worth parsing, as
     # it seems to usually just be a repeat of the References.
     if (my $refs = $head->get('References')) {
-	chomp();
+	chomp($refs);
 
 	foreach my $ref (split(/\s+/, $refs)) {
 	    $ref =~ /,?<([^>]+)>/;
