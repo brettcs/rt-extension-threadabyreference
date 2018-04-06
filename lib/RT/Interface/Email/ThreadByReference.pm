@@ -46,15 +46,16 @@ sub BeforeDecrypt {
     my $ticket_count = scalar(@tickets);
     if ($ticket_count == 0) {
 	$RT::Logger->debug("No tickets for references found.");
-	return;
     }
     elsif ($ticket_count > 1) {
 	$RT::Logger->warning("Email maps to more than one ticket.");
 	$RT::Logger->warning(sprintf("Tickets: %s", @tickets));
     }
-    $RT::Logger->debug(sprintf("Threading email in ticket %s", $tickets[0]));
-    my $subject = Encode::decode("UTF-8", $head->get('Subject') || '');
-    $head->replace('Subject', RT::Interface::Email::AddSubjectTag($subject, $tickets[0]));
+    else {
+	$RT::Logger->debug(sprintf("Threading email in ticket %s", $tickets[0]));
+	my $subject = Encode::decode("UTF-8", $head->get('Subject') || '');
+	$head->replace('Subject', RT::Interface::Email::AddSubjectTag($subject, $tickets[0]));
+    }
 }
 
 sub FetchMessageReferences {
