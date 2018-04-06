@@ -26,10 +26,10 @@ sub BeforeDecrypt {
     }
 
     my $head = $args{'Message'}->head();
-    my @messageids = FetchPossibleHeaders($head);
+    my @messageids = FetchMessageReferences($head);
 
     unless (scalar @messageids >= 1) {
-	$RT::Logger->debug("Message contains no headers!");
+	$RT::Logger->debug("Message contains no references!");
 	return;
     }
 
@@ -57,7 +57,7 @@ sub BeforeDecrypt {
     $head->replace('Subject', RT::Interface::Email::AddSubjectTag($subject, $tickets[0]));
 }
 
-sub FetchPossibleHeaders {
+sub FetchMessageReferences {
     my $head = shift();
 
     my @msgids = ();
